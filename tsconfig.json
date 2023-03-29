@@ -13,6 +13,6 @@
     "jsx": "react-jsx",
     "jsxImportSource": "preact"
   },
-  "include": ["src"],
+  "include": ["src", "index.d.ts"],
   "exclude": ["spec"]
 }
