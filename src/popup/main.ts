@@ -1,7 +1,7 @@
 import { render } from "preact";
 import { MESSAGE_TYPES } from "src/lib/helpers/messages.helper";
 import { Main } from "src/popup/containers/Main";
-import "./styles/index.scss";
+import "./styles/popup.scss";
 
 (async () => {
   render(Main, document.querySelector("body"));
