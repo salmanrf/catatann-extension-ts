@@ -29,16 +29,6 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
-        exclude: /node_modules/,
-        use: {
-          loader: "ts-loader",
-          options: {
-            transpileOnly: true,
-          },
-        },
-      },
-      {
         test: /\.(scss|css)$/,
         use: [
           process.env.NODE_ENV !== "production" ? "style-loader" : MiniCssExtractPlugin.loader,
@@ -52,6 +42,36 @@ module.exports = {
         ],
       },
       { test: /\.(png|svg|jpg|jpeg|gif)$/i, type: "asset/resource" },
+      {
+        test: /\.tsx?$/,
+        exclude: /node_modules/,
+        use: {
+          loader: "babel-loader",
+          options: {
+            presets: ["@babel/preset-react", "@babel/preset-env"],
+            plugins: [
+              ["@babel/plugin-transform-runtime"],
+              [
+                "@babel/plugin-transform-react-jsx",
+                {
+                  pragma: "h",
+                  pragmaFrag: "Fragment",
+                },
+              ],
+            ],
+          },
+        },
+      },
+      {
+        test: /\.tsx?$/,
+        exclude: /node_modules/,
+        use: {
+          loader: "ts-loader",
+          options: {
+            transpileOnly: true,
+          },
+        },
+      },
     ],
   },
   resolve: {

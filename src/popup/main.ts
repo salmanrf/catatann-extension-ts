@@ -1,10 +1,12 @@
+import { render } from "preact";
 import { MESSAGE_TYPES } from "src/lib/helpers/messages.helper";
+import { Main } from "src/popup/containers/Main";
 import "./styles/index.scss";
 
-console.log("Hello Google Chrome");
-
 (async () => {
+  render(Main, document.querySelector("body"));
+
   const res = await chrome.runtime.sendMessage({ type: MESSAGE_TYPES.TEST, data: {} });
 
-  console.log("Service worker returns: ", res);
+  console.log("service worker says", res);
 })();

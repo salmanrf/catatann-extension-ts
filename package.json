@@ -5,13 +5,18 @@
   "license": "MIT",
   "scripts": {
     "watch": "webpack --watch --config webpack.dev.js",
-    "build": "NODE_ENV=production webpack --config webpack.prod.js && mkdir build/ && cp manifest.json build/manifest.json && cp dist/ build/dist",
+    "build": "NODE_ENV=production webpack --config webpack.prod.js && mkdir -p build/ && cp manifest.json build/manifest.json && cp -r dist/ build/dist",
     "test": "npx jest"
   },
   "devDependencies": {
+    "@babel/plugin-transform-react-jsx": "^7.21.0",
+    "@babel/plugin-transform-runtime": "^7.21.0",
+    "@babel/preset-env": "^7.20.2",
+    "@babel/preset-react": "^7.18.6",
     "@types/jest": "^29.5.0",
     "@typescript-eslint/eslint-plugin": "^5.57.0",
     "@typescript-eslint/parser": "^5.57.0",
+    "babel-loader": "^9.1.2",
     "chrome-types": "^0.1.180",
     "clean-webpack-plugin": "^4.0.0",
     "copy-webpack-plugin": "^11.0.0",
@@ -30,5 +35,10 @@
     "typescript": "^5.0.2",
     "webpack": "^5.76.3",
     "webpack-cli": "^5.0.1"
+  },
+  "dependencies": {
+    "preact": "^10.13.2",
+    "preact-render-to-string": "^6.0.1",
+    "preact-router": "^4.1.0"
   }
 }
