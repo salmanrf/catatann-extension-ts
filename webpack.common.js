@@ -5,6 +5,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const ESLintPlugin = require("eslint-webpack-plugin");
+const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
   entry: {
@@ -84,6 +85,9 @@ module.exports = {
       chunkFilename: "[id].css",
     }),
     new CleanWebpackPlugin(),
+    new CopyPlugin({
+      patterns: [{ from: "./manifest.json", to: "manifest.json" }],
+    }),
     new HtmlWebpackPlugin({
       filename: "popup.html",
       template: "./src/popup/index.html",
