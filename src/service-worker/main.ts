@@ -1,29 +1,59 @@
 import { MESSAGE_TYPES } from "src/lib/helpers/messages.helper";
-import { handleTest } from "src/service-worker/handlers/test.handlers";
+import * as sessionHandlers from "src/service-worker/handlers/session-handler";
+import * as noteHandlers from "src/service-worker/handlers/note-handler";
+import { promiseTuplify } from "src/lib/utils/promise.utils";
+import { fetchExtensionRefreshToken, USERS_API_URL } from "src/lib/apis/user-api";
 
 const handlers = new Map<string, (data: any, cb: (result: any) => void) => void>();
 
 function setupHandlers() {
-  handlers.set(MESSAGE_TYPES.TEST, handleTest);
+  // ? Session handlers
+  handlers.set(MESSAGE_TYPES.LOGGED_IN, sessionHandlers.handleLogin);
+  handlers.set(MESSAGE_TYPES.FETCH_SELF, sessionHandlers.handleFetchSession);
+
+  // ? Note handlers
+  handlers.set(MESSAGE_TYPES.FIND_ONE_NOTE, noteHandlers.handleFetchOneNote);
+  handlers.set(MESSAGE_TYPES.FIND_NOTES, noteHandlers.handleFetchNotes);
+  handlers.set(MESSAGE_TYPES.SEARCH_NOTES, noteHandlers.handleSearchNotes);
 }
 
-chrome.runtime.onInstalled.addListener(() => {
+chrome.runtime.onInstalled.addListener(async () => {
   setupHandlers();
+
+  const { ctnn_refresh_token } = await chrome.storage.local.get(["ctnn_refresh_token"]);
+
+  if (!ctnn_refresh_token) {
+    return;
+  }
+
+  const [res, error] = await promiseTuplify(
+    fetchExtensionRefreshToken(USERS_API_URL, ctnn_refresh_token)
+  );
+
+  if (error) {
+    return;
+  }
+
+  // ? Callback is not used
+  handlers.get(MESSAGE_TYPES.LOGGED_IN)(res, () => null);
 });
 
-chrome.runtime.onMessage.addListener((message, sender, cb) => {
-  const { type, data } = message;
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  const { type, data } = message ?? {};
 
   const handler = handlers.get(type);
 
   if (!(handler instanceof Function)) {
-    (cb as any)({
-      errors: ["Unrecognized message type"],
-      data: null,
-    });
+    throw new Error("Unrecognized message type");
   }
 
-  handler(data, cb);
+  handler(data, sendResponse);
 
   return true;
+});
+
+chrome.alarms.onAlarm.addListener((alarm) => {
+  if (alarm.name === "init-refresh-token") {
+    sessionHandlers.handleRefreshTokenAlarm();
+  }
 });
