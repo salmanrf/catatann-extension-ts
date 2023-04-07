@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
+    "paths": {
+      "src/*": ["./src/*"],
+      "mocks/*": ["./__mocks__/*"]
+    },
     "outDir": "./dist",
     "moduleResolution": "node",
     "noImplicitAny": true,
@@ -11,7 +15,8 @@
     "allowJs": true,
     "types": ["chrome-types", "jest"],
     "jsx": "react-jsx",
-    "jsxImportSource": "preact"
+    "jsxImportSource": "preact",
+    "typeRoots": ["node_modules/@types"]
   },
   "include": ["src", "index.d.ts"],
   "exclude": ["spec"]
