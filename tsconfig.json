@@ -1,17 +1,29 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
-    "outDir": "./dist",
-    "moduleResolution": "node",
-    "noImplicitAny": true,
+    "target": "esnext",
+    "types": ["node", "chrome-types", "jest"],
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": false,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "sourceMap": true,
-    "module": "ES6",
-    "target": "ES2015",
-    "allowJs": true,
-    "types": ["chrome-types", "jest"],
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "noEmit": true,
     "jsx": "react-jsx",
-    "jsxImportSource": "preact"
+    "baseUrl": ".",
+    "paths": {
+      "src/*": ["src/*"],
+      "mocks/*": ["__mocks__/*"]
+    },
+    "outDir": "./dist",
+    "noImplicitAny": true,
+    "jsxImportSource": "preact",
+    "typeRoots": ["node_modules/@types", "chrome-extension-types"]
   },
   "include": ["src", "index.d.ts"],
   "exclude": ["spec"]
