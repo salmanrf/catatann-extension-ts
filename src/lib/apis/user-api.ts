@@ -1,12 +1,13 @@
-// ! This variable can't be referenced from content script
-
 import { CONFIG } from "src/lib/configs/config";
+import { User } from "src/lib/types/users.model";
 import { CustomError } from "src/lib/utils/CustomError";
 
 // ! Therefore content script functions need to be self contained
 export const USERS_API_URL = `${CONFIG.API_URL}/users`;
 
-export async function fetchExtensionLogin(base_url: string) {
+export async function fetchExtensionLogin(
+  base_url: string
+): Promise<[User | null, CustomError | null]> {
   try {
     const url = `${base_url}/extension-signin`;
 
@@ -14,18 +15,14 @@ export async function fetchExtensionLogin(base_url: string) {
       credentials: "include",
     });
 
-    const { errors, data } = await res.json();
+    const { errors = [], data } = await res.json();
 
     if (res.status !== 200) {
-      const error = new CustomError(res.status, errors);
-
-      throw error;
+      return [null, { name: "custom", code: res.status, errors, message: "" }];
     }
 
-    return data;
+    return [data, null];
   } catch (error) {
-    console.log("Error authenticating extension", error);
-
     throw error;
   }
 }

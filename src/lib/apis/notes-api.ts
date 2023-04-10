@@ -20,7 +20,7 @@ export async function fetchCreateNote(note: CreateNoteDto, access_token: string)
     const { errors, data }: ApiResponse<PaginatedData<Note>> = await res.json();
 
     if (res.status !== 200) {
-      const error = new CustomError(res.status, errors);
+      const error = new CustomError(res.status, errors as string[]);
 
       throw error;
     }

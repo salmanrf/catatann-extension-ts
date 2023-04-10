@@ -22,3 +22,8 @@ export interface LoginResponse {
   access_token: string;
   user: User;
 }
+
+export interface ExtensionLoginResponse {
+  access_token: string;
+  refresh_token: string;
+}
