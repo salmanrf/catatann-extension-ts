@@ -120,3 +120,17 @@ body {
   font-weight: normal;
   font-size: 1.2rem;
 }
+
+.ctnn-icon-spinning {
+  animation: spin 1s infinite linear;
+}
+
+@keyframes spin {
+  0% {
+    rotate: 0deg;
+  }
+
+  100% {
+    rotate: 360deg;
+  }
+}
