@@ -18,8 +18,6 @@ function setupHandlers() {
 }
 
 chrome.runtime.onInstalled.addListener(async () => {
-  setupHandlers();
-
   const { ctnn_refresh_token } = await chrome.storage.local.get(["ctnn_refresh_token"]);
 
   if (!ctnn_refresh_token) {
@@ -35,16 +33,24 @@ chrome.runtime.onInstalled.addListener(async () => {
   }
 
   // ? Callback is not used
-  handlers.get(MESSAGE_TYPES.LOGGED_IN)(res, () => null);
+  const handler = handlers.get(MESSAGE_TYPES.LOGGED_IN);
+
+  if (handler instanceof Function) {
+    handler(res, () => null);
+  }
 });
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   const { type, data } = message ?? {};
 
+  console.log("MESSAGE TYPE", type);
+
   const handler = handlers.get(type);
 
+  console.log("handler", handler);
+
   if (!(handler instanceof Function)) {
-    throw new Error("Unrecognized message type");
+    throw new Error(`Unrecognized message type ${type}`);
   }
 
   handler(data, sendResponse);
@@ -57,3 +63,7 @@ chrome.alarms.onAlarm.addListener((alarm) => {
     sessionHandlers.handleRefreshTokenAlarm();
   }
 });
+
+(async () => {
+  setupHandlers();
+})();

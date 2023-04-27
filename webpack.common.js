@@ -9,9 +9,9 @@ const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
   entry: {
-    popup: "./src/popup/main.ts",
-    content_script: "./src/content-script/main.ts",
-    service_worker: "./src/service-worker/main.ts",
+    popup: "./src/popup/popup.ts",
+    content_script: "./src/content-script/content_script.ts",
+    service_worker: "./src/service-worker/background.ts",
   },
   mode: "development",
   devtool: "source-map",
@@ -44,34 +44,19 @@ module.exports = {
       },
       { test: /\.(png|svg|jpg|jpeg|gif)$/i, type: "asset/resource" },
       {
-        test: /\.tsx?$/,
-        exclude: /node_modules/,
+        test: /\.jsx?$/,
+        exclude: /(node_modules)/,
         use: {
           loader: "babel-loader",
           options: {
-            presets: ["@babel/preset-react", "@babel/preset-env"],
-            plugins: [
-              ["@babel/plugin-transform-runtime"],
-              [
-                "@babel/plugin-transform-react-jsx",
-                {
-                  pragma: "h",
-                  pragmaFrag: "Fragment",
-                },
-              ],
-            ],
+            presets: ["@babel/preset-env"],
+            plugins: [["@babel/plugin-transform-react-jsx"]],
           },
         },
       },
       {
         test: /\.tsx?$/,
-        exclude: /node_modules/,
-        use: {
-          loader: "ts-loader",
-          options: {
-            transpileOnly: true,
-          },
-        },
+        loader: "ts-loader",
       },
     ],
   },
