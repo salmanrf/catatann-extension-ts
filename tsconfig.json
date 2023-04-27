@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "esnext",
-    "types": ["node", "chrome-types", "jest"],
+    "types": ["node", "chrome-types", "jest", "webpack-env", "mocha", "preact", "preact-compat"],
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": false,
     "skipLibCheck": true,
@@ -17,9 +17,12 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
+      "react": ["./node_modules/preact/compat/"],
+      "react-dom": ["./node_modules/preact/compat/"],
       "src/*": ["src/*"],
       "mocks/*": ["__mocks__/*"]
     },
+    // "jsx": "preserve",
     "outDir": "./dist",
     "noImplicitAny": true,
     "jsxImportSource": "preact",
