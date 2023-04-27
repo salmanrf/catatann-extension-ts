@@ -43,11 +43,7 @@ chrome.runtime.onInstalled.addListener(async () => {
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   const { type, data } = message ?? {};
 
-  console.log("MESSAGE TYPE", type);
-
   const handler = handlers.get(type);
-
-  console.log("handler", handler);
 
   if (!(handler instanceof Function)) {
     throw new Error(`Unrecognized message type ${type}`);
