@@ -7,14 +7,12 @@ import { CustomError } from "src/lib/utils/CustomError";
 export async function startAuthFlow(): Promise<User | null> {
   try {
     // ? Attempt to fetchSelf with previously stored tokens
-    const fetchUserRes = await chrome.runtime.sendMessage({ type: MESSAGE_TYPES.FETCH_SELF });
+    const [fetchUserRes, fetchUserError] = await chrome.runtime.sendMessage({
+      type: MESSAGE_TYPES.FETCH_SELF,
+    });
 
-    if (fetchUserRes) {
-      const { user } = fetchUserRes;
-
-      if (user && user.user_id) {
-        return user;
-      }
+    if (!fetchUserError) {
+      return fetchUserRes;
     }
 
     // ? Get the first open Client App tab
@@ -28,7 +26,7 @@ export async function startAuthFlow(): Promise<User | null> {
     }
 
     // ? Authentication through Client App success, emit login event, resulting in user
-    const { user }: { user: User } = await chrome.runtime.sendMessage({
+    const [user]: [User, Error] = await chrome.runtime.sendMessage({
       type: MESSAGE_TYPES.LOGGED_IN,
       data: res,
     });
@@ -71,12 +69,8 @@ async function authenticateFromClientApp(
       args: [USERS_API_URL],
     });
 
-    console.log("authenticate from client app result", res);
-
     return res[0].result;
   } catch (error) {
-    console.log("error at authenticate", error);
-
     throw error;
   }
 }
