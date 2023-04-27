@@ -13,13 +13,15 @@ export async function handleFetchSession(_: any, cb: CALLBACK) {
         return cb(null);
       }
 
-      const [res, error] = await promiseTuplify(
-        fetchExtensionRefreshToken(USERS_API_URL, ctnn_refresh_token)
-      );
+      const [res, error] = await fetchExtensionRefreshToken(USERS_API_URL, ctnn_refresh_token);
 
       // ? Refresh token failed, session has expired
       if (error) {
-        return cb(null);
+        return cb([null, error]);
+      }
+
+      if (!res) {
+        return cb([null, error]);
       }
 
       ctnn_refresh_token = res.refresh_token;
@@ -29,9 +31,9 @@ export async function handleFetchSession(_: any, cb: CALLBACK) {
       ctnn_access_token = res.access_token;
     }
 
-    const user = await fetchSelf(USERS_API_URL, ctnn_access_token);
+    const userRes = await fetchSelf(USERS_API_URL, ctnn_access_token);
 
-    return cb({ user });
+    return cb(userRes);
   } catch (error) {
     console.log("Error in handle fetch session", error);
     cb(null);
@@ -48,13 +50,17 @@ export async function handleLogin(
     await chrome.storage.local.set({ ctnn_refresh_token: refresh_token });
     await chrome.storage.session.set({ ctnn_access_token: access_token });
 
-    const user = await fetchSelf(USERS_API_URL, access_token);
+    const [user, error] = await fetchSelf(USERS_API_URL, access_token);
+
+    if (error) {
+      return cb([null, error]);
+    }
 
     const alarm = chrome.alarms.create("init-refresh-token", {
       when: Date.now() + 1000 * 60 * 9,
     });
 
-    return cb({ user });
+    return cb([user, null]);
   } catch (error) {
     console.log("Error in handle login", error);
     cb(null);
