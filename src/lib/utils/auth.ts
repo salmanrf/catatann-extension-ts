@@ -9,8 +9,6 @@ export async function startAuthFlow(): Promise<User | null> {
     // ? Attempt to fetchSelf with previously stored tokens
     const fetchUserRes = await chrome.runtime.sendMessage({ type: MESSAGE_TYPES.FETCH_SELF });
 
-    console.log("fetchUserRes", fetchUserRes);
-
     if (fetchUserRes) {
       const { user } = fetchUserRes;
 
@@ -23,8 +21,6 @@ export async function startAuthFlow(): Promise<User | null> {
     const tab = await findClientAppTab();
     // ? Attempt to fetch new refresh token using refresh token stored in Client App
     const [res, error] = await authenticateFromClientApp(tab);
-
-    console.log("res", res);
 
     // ? Unable to authenticate through Client App, finish
     if (error) {
