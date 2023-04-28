@@ -55,7 +55,7 @@ export async function fetchFindOneNote(
 
     return [data, null];
   } catch (error) {
-    throw [null, error];
+    return [null, error as CustomError];
   }
 }
 
@@ -82,7 +82,7 @@ export async function fetchSearchNotes(
 
     return [data, null];
   } catch (error) {
-    throw [null, error];
+    return [null, error as CustomError];
   }
 }
 
@@ -109,6 +109,6 @@ export async function fetchFindNotes(
 
     return [data, null];
   } catch (error) {
-    throw [null, error];
+    return [null, error as CustomError];
   }
 }
