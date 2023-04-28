@@ -22,7 +22,7 @@ export async function fetchCreateNote(
 
     const { errors, data }: ApiResponse<Note> = await res.json();
 
-    if (res.status !== 200) {
+    if (res.status !== 201) {
       const error = new CustomError(res.status, errors as string[]);
 
       throw error;
