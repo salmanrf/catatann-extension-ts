@@ -6,6 +6,7 @@ export class CustomError extends Error {
     super();
 
     this.code = code;
+    this.message = errors[0];
     this.errors = errors;
   }
 }
