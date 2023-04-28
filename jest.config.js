@@ -4,9 +4,13 @@ module.exports = {
   testEnvironment: "jsdom",
   moduleNameMapper: {
     "^src/(.*)&": "<rootDir>/src/$1",
-    "^mocks/(.*)$": "<rootDir>/__mocks__/$1",
+    "^mocks/(.*)$": "<rootDir>/mocks/$1",
   },
   rootDir: ".",
-  moduleDirectories: ["node_modules", "src"],
-  testMatch: ["<rootDir>/__tests__/**/*.spec.ts"],
+  moduleDirectories: ["node_modules", "<rootDir>"],
+  moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
+  testMatch: ["<rootDir>/tests/**/*.spec.ts"],
+  transform: {
+    "^.+\\.tsx?$": "ts-jest",
+  },
 };

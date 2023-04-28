@@ -20,14 +20,14 @@
       "react": ["./node_modules/preact/compat/"],
       "react-dom": ["./node_modules/preact/compat/"],
       "src/*": ["src/*"],
-      "mocks/*": ["__mocks__/*"]
+      "tests": ["tests/*"],
+      "mocks/*": ["mocks/*"]
     },
-    // "jsx": "preserve",
     "outDir": "./dist",
     "noImplicitAny": true,
     "jsxImportSource": "preact",
     "typeRoots": ["node_modules/@types", "chrome-extension-types"]
   },
-  "include": ["src", "index.d.ts"],
+  "include": ["src", "index.d.ts", "tests"],
   "exclude": ["spec"]
 }
