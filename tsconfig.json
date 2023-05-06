@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "esnext",
-    "types": ["node", "chrome-types", "jest", "webpack-env", "mocha", "preact", "preact-compat"],
+    "types": ["node", "chrome-types", "jest", "webpack-env", "preact", "preact/compat"],
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": false,
     "skipLibCheck": true,
@@ -14,7 +14,9 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "noEmit": true,
-    "jsx": "react-jsx",
+    "jsx": "preserve",
+    "jsxFactory": "h",
+    "jsxImportSource": "preact",
     "baseUrl": ".",
     "paths": {
       "react": ["./node_modules/preact/compat/"],
@@ -23,11 +25,12 @@
       "tests": ["tests/*"],
       "mocks/*": ["mocks/*"]
     },
+    "sourceMap": true,
     "outDir": "./dist",
     "noImplicitAny": true,
-    "jsxImportSource": "preact",
     "typeRoots": ["node_modules/@types", "chrome-extension-types"]
   },
-  "include": ["src", "index.d.ts", "tests"],
+
+  "include": ["src", "index.d.ts", "tests", "preact-compat.d.ts"],
   "exclude": ["spec"]
 }

@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
+const { ProvidePlugin } = require("webpack");
 const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
@@ -48,19 +49,24 @@ module.exports = {
       },
       { test: /\.(png|svg|jpg|jpeg|gif)$/i, type: "asset/resource" },
       {
-        test: /\.jsx?$/,
-        exclude: /(node_modules)/,
+        test: /\.(js|jsx|ts|tsx)$/,
+        exclude: /node_modules/,
         use: {
           loader: "babel-loader",
           options: {
-            presets: ["@babel/preset-env"],
-            plugins: [["@babel/plugin-transform-react-jsx"]],
+            presets: ["@babel/preset-react", "@babel/preset-env"],
+            plugins: [
+              ["@babel/plugin-transform-runtime"],
+              [
+                "@babel/plugin-transform-react-jsx",
+                {
+                  runtime: "automatic",
+                  importSource: "preact",
+                },
+              ],
+            ],
           },
         },
-      },
-      {
-        test: /\.tsx?$/,
-        loader: "ts-loader",
       },
     ],
   },
@@ -69,6 +75,9 @@ module.exports = {
     modules: ["node_modules", path.join(__dirname, ".")],
   },
   plugins: [
+    new ProvidePlugin({
+      React: "preact/compat",
+    }),
     new MiniCssExtractPlugin({
       filename: "[name].css",
       chunkFilename: "[id].css",
