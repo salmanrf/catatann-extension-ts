@@ -9,10 +9,13 @@
     "test": "jest"
   },
   "devDependencies": {
+    "@babel/core": "^7.21.8",
+    "@babel/plugin-proposal-class-properties": "^7.18.6",
     "@babel/plugin-transform-react-jsx": "^7.21.0",
     "@babel/plugin-transform-runtime": "^7.21.0",
-    "@babel/preset-env": "^7.20.2",
+    "@babel/preset-env": "^7.21.5",
     "@babel/preset-react": "^7.18.6",
+    "@babel/preset-typescript": "^7.21.5",
     "@types/chrome": "^0.0.228",
     "@types/jest": "^29.5.1",
     "@typescript-eslint/eslint-plugin": "^5.57.0",
@@ -39,11 +42,16 @@
     "webpack-cli": "^5.0.1"
   },
   "dependencies": {
+    "@types/react": "npm:@preact/compat@*",
+    "@types/react-dom": "npm:@preact/compat@*",
+    "@uiw/react-markdown-editor": "^5.11.1",
     "@uiw/react-md-editor": "^3.20.6",
     "lucide-preact": "^0.128.0",
     "preact": "^10.13.2",
     "preact-markdown": "^2.1.0",
     "preact-render-to-string": "^6.0.1",
-    "preact-router": "^4.1.0"
+    "preact-router": "^4.1.0",
+    "react": "npm:@preact/compat@*",
+    "react-dom": "npm:@preact/compat@*"
   }
 }
