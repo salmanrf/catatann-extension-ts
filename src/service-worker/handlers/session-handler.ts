@@ -10,7 +10,7 @@ export async function handleFetchSession(_: any, cb: CALLBACK) {
 
     if (!ctnn_access_token) {
       if (!ctnn_refresh_token) {
-        return cb(null);
+        return cb([null, new Error("No refresh token found")]);
       }
 
       const [res, error] = await fetchExtensionRefreshToken(USERS_API_URL, ctnn_refresh_token);
@@ -33,7 +33,7 @@ export async function handleFetchSession(_: any, cb: CALLBACK) {
 
     const userRes = await fetchSelf(USERS_API_URL, ctnn_access_token);
 
-    return cb(userRes);
+    return cb([userRes, null]);
   } catch (error) {
     console.log("Error in handle fetch session", error);
     cb(null);
